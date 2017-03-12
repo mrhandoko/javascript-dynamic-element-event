@@ -1,0 +1,26 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table {
+    margin-top: 20px;
+    width: 80%;
+}
+
+td {
+    padding-left: 10px;
+}
+
+a#new {
+    text-decoration: none;
+    background-color: lightskyblue;
+    padding: 10px;
+    color: white;
+    margin-left: 126px;
+    font-family: sans-serif;
+}
+
+a#new:hover {
+  background-color: #c2def0;
+}

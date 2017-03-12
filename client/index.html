@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Javascript Dynamic Elements and Events</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <!-- Prevent live-server from GET favicon.ico -->
+    <link rel="shortcut icon" href="">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <center>
+      <h1>Javascript Dynamic Elements and Events</h1>
+    </center>
+      <a id="new" href="new.html">NEW</a>
+      <center>
+        <table id="memo">
+          <thead>
+            <th>No</th>
+            <th>Complete</th>
+            <th>TODO</th>
+            <th>email</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </center>
+  </body>
+  <script>
+    $(document).ready(() => {
+      loadTodoData()
+    })
+
+    let loadTodoData = () => {
+      $.ajax({
+        url: 'http://localhost:3000/api/todos',
+        type: 'GET',
+        success: (response) => {
+          var count = 1
+          response.forEach((memo) => {
+            var status = ''
+            if (memo.status === 0) {
+              status = 'uncomplete'
+            } else {
+              status = 'completed'
+            }
+            $('#memo').append(`<tr id="row-${memo.id}"><td>${count}</td><td><input id="check-${memo.id}" type="checkbox" name="check" onchange="completeTodo(${memo.id})"/></td><td>${memo.todo}</td><td>${memo.User.email}</td><td>${status}</td><td><button onclick="removeTodo(${memo.id})">Delete</button></td></tr>`);
+            count++
+          })
+        }
+      })
+    }
+
+    let completeTodo = (id) => {
+      if($(`#check-${id}`).is(':checked')){
+        // $.ajax({
+        //   url: `http://localhost:3000/api/todo/${id}`,
+        //   type: 'PUT',
+        //   data: { 'todo': memo, 'status' : 1},
+        //   success: () => {
+        //     // $(`#status-${id}`).closest('td').innerHTML='completed'
+        //     console.log('berhasil update');
+        //   }
+        // })
+        console.log(id);
+      }
+    }
+
+    let removeTodo = (id) => {
+      $.ajax({
+        url: `http://localhost:3000/api/todo/${id}`,
+        type: 'DELETE',
+        success: () => {
+          $(`#row-${id}`).closest('tr').remove()
+        }
+      })
+    }
+  </script>
+</html>

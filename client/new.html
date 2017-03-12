@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Javascript Dynamic Elements and Events</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <center>
+      <h1>Javascript Dynamic Elements and Events</h1>
+    </center>
+    <center>
+      <label>Email</label>
+      <select name="email">
+        <option value=''>- Pilih Email -</option>
+        <<option value=""></option>
+      </select>
+    </center>
+  </body>
+  <script>
+  $(document).ready(function(){
+    $.get("http://localhost:3000/api/users", (data) => {
+      console.log(data)
+    })
+  });
+  </script>
+</html>
