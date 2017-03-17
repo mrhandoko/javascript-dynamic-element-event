@@ -11,6 +11,8 @@
       <h1>Javascript Dynamic Elements and Events</h1>
     </center>
     <center>
+      <label></label>
+      <label></label>
       <label>Email</label>
       <select id="email" name="email">
         <option value=''>- Pilih Email -</option>
@@ -21,9 +23,13 @@
   $(document).ready(function(){
     getEmails ()
   })
+
   function getEmails () {
-    $.get("http://localhost:3000/api/users", (user) => {
-      $("#email").append(`<option value='${user.id}'>${user.email}</option>`)
+    $.get("http://localhost:3000/api/users", (users) => {
+      console.log(users);
+      users.forEach(function(user) {
+        $("#email").append(`<option value='${user.id}'>${user.email}</option>`)
+      })
     })
   }
   </script>
