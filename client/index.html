@@ -40,13 +40,13 @@
           $('#memo').empty()
           var count = 1
           response.forEach((memo) => {
-            var status = ''
-            if (memo.status === 0) {
-              status = 'uncomplete'
-            } else {
-              status = 'completed'
-            }
-            $('#memo').append(`<tr id="row-${memo.id}"><td>${count}</td></td><td>${memo.todo}</td><td>${memo.User.email}</td><td><button onclick="completeTodo(${memo.id})">${status}</button></td><td><button onclick="removeTodo(${memo.id})">Delete</button></td></tr>`);
+            // var status = ''
+            // if (memo.status === 0) {
+            //   status = 'uncompleted'
+            // } else {
+            //   status = 'completed'
+            // }
+            $('#memo').append(`<tr id="row-${memo.id}"><td>${count}</td></td><td>${memo.todo}</td><td>${memo.User.email}</td><td id='status-${memo.id}'><button id='btn-${memo.id}' onclick="completeTodo(${memo.id})">uncompleted</button></td><td><button onclick="removeTodo(${memo.id})">Delete</button></td></tr>`);
             count++
           })
         }
@@ -59,8 +59,8 @@
         type: 'PUT',
         data: {status: 1},
         success: () => {
-          $(`#status-${id}`).closest('td').innerHTML=`<button onclick="uncompleteTodo(${memo.id})">${status}</button>`
-          loadTodoData()
+          $(`#status-${id}`).empty()
+          $(`#status-${id}`).html(`<button onclick="uncompleteTodo(${id})">completed</button>`)
         }
       })
     }
@@ -69,10 +69,10 @@
       $.ajax({
         url: `http://localhost:3000/api/todo/${id}`,
         type: 'PUT',
-        data: {status: 1},
+        data: {status: 0},
         success: () => {
-          $(`#status-${id}`).closest('td').innerHTML=`<button onclick="completeTodo(${memo.id})">${status}</button>`
-          loadTodoData()
+          $(`#status-${id}`).empty()
+          $(`#status-${id}`).html(`<button onclick="completeTodo(${id})">uncompleted</button>`)
         }
       })
     }

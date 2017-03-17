@@ -15,6 +15,7 @@ todo.getTodo = (req, res, next) => {
 
 todo.newTodo = (req, res, next) => {
   Model.Memo.create({
+    UserId: req.body.email,
     todo: req.body.todo,
     status: 0
   }).then((data) => {

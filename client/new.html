@@ -11,24 +11,45 @@
       <h1>Javascript Dynamic Elements and Events</h1>
     </center>
     <center>
-      <label></label>
-      <label></label>
-      <label>Email</label>
-      <select id="email" name="email">
+      <!-- <form method='post'> -->
+      <label>TODO</label><br/>
+      <textarea id="todo" name="todo" cols="80" rows="20"></textarea><br/>
+      <label>Email</label><br/>
+      <select id="email" name="email"><br/>
         <option value=''>- Pilih Email -</option>
       </select>
+      <input type="submit" id="submit" name="submit" value="Submit"/>
+    <!-- </form> -->
     </center>
   </body>
   <script>
   $(document).ready(function(){
     getEmails ()
+
+    $('#submit').click(function() {
+
+      if ($('#email').val() === '') {
+        window.location = 'http://127.0.0.1:8080/new.html'
+      } else {
+        $.ajax({
+          url: 'http://localhost:3000/api/todo',
+          type: 'POST',
+          data: {
+            todo: $('#todo').val(),
+            email: $('#email').val()
+          },
+          success: function(data) {
+            window.location = 'http://127.0.0.1:8080'
+          }
+        })
+      }
+    })
   })
 
   function getEmails () {
     $.get("http://localhost:3000/api/users", (users) => {
-      console.log(users);
       users.forEach(function(user) {
-        $("#email").append(`<option value='${user.id}'>${user.email}</option>`)
+        $("#email").append(`<option value=${user.id}>${user.email}</option>`)
       })
     })
   }
