@@ -14,16 +14,15 @@
     </center>
       <a id="new" href="new.html">NEW</a>
       <center>
-        <table id="memo">
+        <table >
           <thead>
             <th>No</th>
-            <th>Complete</th>
             <th>TODO</th>
             <th>email</th>
             <th>Status</th>
             <th>Action</th>
           </thead>
-          <tbody>
+          <tbody id="memo">
           </tbody>
         </table>
       </center>
@@ -38,6 +37,7 @@
         url: 'http://localhost:3000/api/todos',
         type: 'GET',
         success: (response) => {
+          $('#memo').empty()
           var count = 1
           response.forEach((memo) => {
             var status = ''
@@ -46,7 +46,7 @@
             } else {
               status = 'completed'
             }
-            $('#memo').append(`<tr id="row-${memo.id}"><td>${count}</td><td><input id="check-${memo.id}" type="checkbox" name="check" onchange="completeTodo(${memo.id})"/></td><td>${memo.todo}</td><td>${memo.User.email}</td><td>${status}</td><td><button onclick="removeTodo(${memo.id})">Delete</button></td></tr>`);
+            $('#memo').append(`<tr id="row-${memo.id}"><td>${count}</td></td><td>${memo.todo}</td><td>${memo.User.email}</td><td><button onclick="completeTodo(${memo.id})">${status}</button></td><td><button onclick="removeTodo(${memo.id})">Delete</button></td></tr>`);
             count++
           })
         }
@@ -54,18 +54,27 @@
     }
 
     let completeTodo = (id) => {
-      if($(`#check-${id}`).is(':checked')){
-        // $.ajax({
-        //   url: `http://localhost:3000/api/todo/${id}`,
-        //   type: 'PUT',
-        //   data: { 'todo': memo, 'status' : 1},
-        //   success: () => {
-        //     // $(`#status-${id}`).closest('td').innerHTML='completed'
-        //     console.log('berhasil update');
-        //   }
-        // })
-        console.log(id);
-      }
+      $.ajax({
+        url: `http://localhost:3000/api/todo/${id}`,
+        type: 'PUT',
+        data: {status: 1},
+        success: () => {
+          $(`#status-${id}`).closest('td').innerHTML=`<button onclick="uncompleteTodo(${memo.id})">${status}</button>`
+          loadTodoData()
+        }
+      })
+    }
+
+    let uncompleteTodo = (id) => {
+      $.ajax({
+        url: `http://localhost:3000/api/todo/${id}`,
+        type: 'PUT',
+        data: {status: 1},
+        success: () => {
+          $(`#status-${id}`).closest('td').innerHTML=`<button onclick="completeTodo(${memo.id})">${status}</button>`
+          loadTodoData()
+        }
+      })
     }
 
     let removeTodo = (id) => {
@@ -73,7 +82,8 @@
         url: `http://localhost:3000/api/todo/${id}`,
         type: 'DELETE',
         success: () => {
-          $(`#row-${id}`).closest('tr').remove()
+          $(this).parent().parent('tr').remove()
+          loadTodoData()
         }
       })
     }

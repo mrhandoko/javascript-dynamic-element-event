@@ -12,17 +12,19 @@
     </center>
     <center>
       <label>Email</label>
-      <select name="email">
+      <select id="email" name="email">
         <option value=''>- Pilih Email -</option>
-        <<option value=""></option>
       </select>
     </center>
   </body>
   <script>
   $(document).ready(function(){
-    $.get("http://localhost:3000/api/users", (data) => {
-      console.log(data)
+    getEmails ()
+  })
+  function getEmails () {
+    $.get("http://localhost:3000/api/users", (user) => {
+      $("#email").append(`<option value='${user.id}'>${user.email}</option>`)
     })
-  });
+  }
   </script>
 </html>
